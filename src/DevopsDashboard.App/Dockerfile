@@ -1,6 +1,10 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY . .
+RUN dotnet publish DevopsDashboard.App.csproj -c Release -o /app/publish
+
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
-# מעתיקים ישירות את קבצי ה-Publish המוכנים שהאג'נט בנה
-COPY publish/wwwroot .
+COPY --from=build /app/publish/wwwroot .
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
