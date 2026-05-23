@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Fixed the path here to point correctly to the app project -->
     <ProjectReference Include="../../src/DevopsDashboard.App/DevopsDashboard.App.csproj" />
   </ItemGroup>
 
