@@ -26,7 +26,7 @@ public class DeploymentConfig
 {
     // OPTION 1: THEME TOGGLE
     // Change false to true to activate Dark Cyberpunk mode instantly!
-    public static bool EnableCyberpunkTheme = false; 
+    public static bool EnableCyberpunkTheme = true; 
 
     // OPTION 2: SIMULATE INFRASTRUCTURE FAILURE (Chaos Engineering)
     // Change false to true to simulate a node outage. 
