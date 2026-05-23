@@ -1,2 +1,64 @@
-<h1>My DevOps Dashboard V2</h1>
-<p>Welcome to my automated Blazor App running on Kubernetes!</p>
+@page "/"
+
+<div class="min-h-screen bg-gradient-to-br @DeploymentConfig.GetThemeClass() p-8">
+    <header class="mb-8 flex justify-between items-center border-b border-opacity-20 pb-4">
+        <div>
+            <h1 class="text-4xl font-black tracking-wider uppercase">
+                @(DeploymentConfig.EnableCyberpunkTheme ? "⚡ CYBERPUNK CLUSTER OPS ⚡" : "📊 Enterprise Cluster Metrics")
+            </h1>
+            <p class="text-sm opacity-70 mt-1">Real-time infrastructure health monitoring node system</p>
+        </div>
+        <div class="px-4 py-2 bg-black bg-opacity-40 rounded-lg text-xs font-mono border border-opacity-30">
+            ENV: PRODUCTION // APP_VERSION: 1.0.0
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        @foreach (var server in Servers)
+        {
+            <div class="bg-black bg-opacity-30 p-6 rounded-2xl backdrop-blur-md transition-all duration-300 hover:scale-[1.02]">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold tracking-tight">@server.ServerName</h3>
+                    <span class="px-3 py-1 text-xs font-semibold uppercase rounded-full 
+                        @(server.Status == "Healthy" ? "bg-emerald-500/20 text-emerald-400" : 
+                          server.Status == "Warning" ? "bg-amber-500/20 text-amber-400" : "bg-rose-500/20 text-rose-400")">
+                        @server.Status
+                    </span>
+                </div>
+
+                <!-- CPU Bar -->
+                <div class="mb-4">
+                    <div class="flex justify-between text-xs font-mono mb-1">
+                        <span>CPU USAGE</span>
+                        <span class="font-bold">@server.CpuUsage%</span>
+                    </div>
+                    <div class="w-full bg-slate-700/50 rounded-full h-2.5 overflow-hidden">
+                        <div class="h-2.5 rounded-full transition-all duration-500 @(server.CpuUsage > 80 ? "bg-rose-500" : "bg-indigo-500")" 
+                             style="width: @server.CpuUsage%"></div>
+                    </div>
+                </div>
+
+                <!-- RAM Bar -->
+                <div class="mb-2">
+                    <div class="flex justify-between text-xs font-mono mb-1">
+                        <span>RAM ALLOCATION</span>
+                        <span class="font-bold">@server.RamUsage%</span>
+                    </div>
+                    <div class="w-full bg-slate-700/50 rounded-full h-2.5 overflow-hidden">
+                        <div class="h-2.5 rounded-full transition-all duration-500 @(server.RamUsage > 80 ? "bg-rose-500" : "bg-emerald-500")" 
+                             style="width: @server.RamUsage%"></div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<ServerMetric> Servers = new()
+    {
+        new ServerMetric { ServerName = "k8s-node-01", CpuUsage = 42, RamUsage = 68, Status = "Healthy" },
+        new ServerMetric { ServerName = "k8s-node-02", CpuUsage = 88, RamUsage = 92, Status = "Critical" },
+        new ServerMetric { ServerName = "k8s-node-03", CpuUsage = 15, RamUsage = 34, Status = "Healthy" }
+    };
+}
