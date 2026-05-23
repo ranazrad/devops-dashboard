@@ -86,7 +86,7 @@ public class DashboardTests
         DeploymentConfig.EnableCyberpunkTheme = false;
         var theme = DeploymentConfig.GetThemeClass();
         Assert.Contains("from-slate-800", theme);
-        Assert.DoesNotContains("from-purple-900", theme);
+        Assert.DoesNotContain("from-purple-900", theme);
     }
 
     [Fact]
